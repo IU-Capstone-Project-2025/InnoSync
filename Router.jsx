@@ -1,2 +1,1 @@
 const AboutPage = React.lazy(() => import('./pages/AboutPage'));
-   
