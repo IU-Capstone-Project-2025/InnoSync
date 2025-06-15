@@ -2,14 +2,17 @@ server:
   port: 8080
 
 spring:
-  security:
-    unabled: false
-
   datasource:
-    url: jdbc:postgresql://postgres:5432/registration
-    username: myuser
-    password: mypass
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+
+
+#springdoc:
+#  swagger-ui:
+#    enabled: false
