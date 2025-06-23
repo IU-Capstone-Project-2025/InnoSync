@@ -21,4 +21,6 @@ public class ProfileRequest {
     private String resume;
     @JsonProperty("work_experience")
     private List<WorkExperienceRequest> workExperience;
+    private List<String> technologies; // list of names of technologies
+
 }

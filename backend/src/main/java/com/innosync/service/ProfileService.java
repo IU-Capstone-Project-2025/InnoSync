@@ -6,13 +6,17 @@ import com.innosync.dto.WorkExperienceResponse;
 import com.innosync.model.Profile;
 import com.innosync.model.User;
 import com.innosync.model.WorkExperience;
+import com.innosync.model.Technology;
 import com.innosync.repository.ProfileRepository;
 import com.innosync.repository.UserRepository;
 import com.innosync.repository.WorkExperienceRepository;
+import com.innosync.repository.TechnologyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +30,9 @@ public class ProfileService {
 
     @Autowired
     private WorkExperienceRepository workExperienceRepository;
+
+    @Autowired
+    private TechnologyRepository technologyRepository;
 
 
     public ProfileResponse createOrUpdateProfile(String email, ProfileRequest request) {
@@ -61,6 +68,19 @@ public class ProfileService {
 
             workExperienceRepository.saveAll(experiences);
         }
+
+        profile.getTechnologies().clear();
+
+        if (request.getTechnologies() != null) {
+            Set<Technology> techSet = request.getTechnologies().stream()
+                    .map(name -> technologyRepository.findByNameIgnoreCase(name)
+                            .orElseGet(() -> technologyRepository.save(
+                                    Technology.builder().name(name).build())))
+                    .collect(Collectors.toSet());
+
+            profile.setTechnologies(techSet);
+        }
+
 
         ProfileResponse response = mapToResponse(profile, user);
         return response;
@@ -103,6 +123,13 @@ public class ProfileService {
                 .collect(Collectors.toList());
 
         response.setWorkExperience(experienceResponses);
+
+        response.setTechnologies(
+                profile.getTechnologies().stream()
+                        .map(Technology::getName)
+                        .toList()
+        );
+
         return response;
     }
 }

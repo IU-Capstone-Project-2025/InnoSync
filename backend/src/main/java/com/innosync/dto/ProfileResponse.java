@@ -19,4 +19,5 @@ public class ProfileResponse {
     private ExpertiseLevel expertiseLevel;
     private String resume;
     private List<WorkExperienceResponse> workExperience;
+    private List<String> technologies;
 }
