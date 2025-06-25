@@ -1,0 +1,219 @@
+/* Container */
+.container {
+  min-height: 100vh;
+  background-color: white;
+}
+
+
+
+/* Hero Section */
+.hero {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.heroContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3rem 0;
+}
+
+@media (min-width: 1024px) {
+  .heroContent {
+    flex-direction: row;
+    padding: 5rem 0;
+  }
+}
+
+.heroLeft {
+  flex: 1;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 1024px) {
+  .heroLeft {
+    text-align: left;
+    padding-right: 3rem;
+    margin-bottom: 0;
+  }
+}
+
+.heroTitle {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .heroTitle {
+    font-size: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .heroTitle {
+    font-size: 3.75rem;
+  }
+}
+
+.titleAccent {
+  color: #16a34a;
+}
+
+.heroSubtitle {
+  font-size: 1.25rem;
+  color: #4b5563;
+  margin-bottom: 2rem;
+  max-width: 32rem;
+}
+
+@media (min-width: 1024px) {
+  .heroSubtitle {
+    margin-left: 0;
+    margin-right: auto;
+  }
+}
+
+.ctaButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 640px) {
+  .ctaButtons {
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 1024px) {
+  .ctaButtons {
+    justify-content: flex-start;
+  }
+}
+
+.primaryCta {
+  background-color: #16a34a;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.primaryCta:hover {
+  background-color: #15803d;
+}
+
+.secondaryCta {
+  border: 1px solid #d1d5db;
+  background-color: white;
+  color: #374151;
+  cursor: pointer;
+  padding: 0.75rem 2rem;
+  border-radius: 9999px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.secondaryCta:hover {
+  background-color: #f9fafb;
+}
+
+.universityLogo {
+  display: flex;
+  justify-content: center;
+}
+
+@media (min-width: 1024px) {
+  .universityLogo {
+    justify-content: flex-start;
+  }
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+}
+
+.logoIcon {
+  width: 2rem;
+  height: 2rem;
+  background-color: #16a34a;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoIconText {
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.logoInfo {
+  font-size: 0.875rem;
+}
+
+.logoTitle {
+  font-weight: 600;
+  color: #374151;
+}
+
+.logoSubtitle {
+  color: #6b7280;
+}
+
+/* Right Illustration */
+.heroRight {
+  flex: 1;
+  max-width: 32rem;
+}
+
+@media (min-width: 1024px) {
+  .heroRight {
+    max-width: 36rem;
+  }
+}
+
+.illustrationContainer {
+  position: relative;
+}
+
+.heroIllustration {
+  width: 100%;
+  height: 24rem;
+  object-fit: contain;
+}
+
+@media (min-width: 1024px) {
+  .heroIllustration {
+    height: 31.25rem;
+  }
+}
+
+/* Mobile menu button (hidden by default, can be added later) */
+.mobileMenuButton {
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .mobileMenuButton {
+    display: none;
+  }
+}

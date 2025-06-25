@@ -26,7 +26,7 @@ services:
       POSTGRES_PASSWORD: mypass
       POSTGRES_DB: registration
     ports:
-      - "5433:5432"
+      - "5440:5432"
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "myuser", "-d", "registration"]
       interval: 5s

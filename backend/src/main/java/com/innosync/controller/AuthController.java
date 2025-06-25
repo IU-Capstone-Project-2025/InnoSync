@@ -36,7 +36,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     @Operation(summary = "Sign up user")
-    public ResponseEntity<?> signUp(@Valid @RequestBody SignInRequest signUpRequest) {
+    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
         String email = signUpRequest.getEmail();
         if (userRepository.findByEmail(email).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Email is already registered!");
@@ -44,7 +44,9 @@ public class AuthController {
 
         User user = new User(
                 signUpRequest.getEmail(),
+                signUpRequest.getFullName(),
                 passwordEncoder.encode(signUpRequest.getPassword())
+
         );
         userRepository.save(user);
 
@@ -56,7 +58,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @Operation(summary = "Log in User")
-    public ResponseEntity<?> singIn(@Valid @RequestBody SignUpRequest signInRequest) {
+    public ResponseEntity<?> singIn(@Valid @RequestBody SignInRequest signInRequest) {
         return userRepository.findByEmail(signInRequest.getEmail())
                 .map(user -> {
                     if (passwordEncoder.matches(signInRequest.getPassword(), user.getPasswordHash())) {

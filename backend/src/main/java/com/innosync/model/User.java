@@ -26,13 +26,13 @@ public class User {
     private String passwordHash;
 
     private String fullName;
-    private String bio;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    public User(String email, String passwordHash)  {
+    public User(String email, String fullName, String passwordHash)  {
         this.email = email;
+        this.fullName = fullName;
         this.passwordHash = passwordHash;
     }
 }

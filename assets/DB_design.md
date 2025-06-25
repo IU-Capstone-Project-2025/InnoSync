@@ -1,4 +1,5 @@
 
+
 # InnoSync Project – Database Design Documentation
 
 ## Table of Contents
@@ -167,6 +168,16 @@ Tracks project invitations sent from recruiters to recruitees.
 | responded_at    | timestamp | Time user responded              |
 
 ---
+### APPLICATION (NEW)
+Tracks user applications to project roles.
+| Field           | Type      | Description                      |
+|-----------------|-----------|---------------------------------|
+| id              | bigint    | Primary key                     |
+| user_id | bigint    | Foreign key → User(id)  |
+| project_role_id         | bigint    | Foreign key → Project_role(id)           |
+| status | application_status_enum | PENDING, UNDER_REVIEW, ACCEPTED, REJECTED, WITHDRAWN |
+| applied_at | timestamp | Application submission time          |
+| updated_at | timestamp | Last status update time |
 
 ## FastSyncing (AI Matching)
 
@@ -255,6 +266,8 @@ Stores messages for group chats and direct messages.
 | USER (Recruiter) → PROJECT          | One-to-Many          |
 | PROJECT → PROJECT_ROLE              | One-to-Many          |
 | PROJECT_ROLE → INVITATION           | One-to-Many          |
+| USER → APPLICATION                   | One-to-Many          |
+| PROJECT_ROLE → APPLICATION           | One-to-Many          |
 | PROJECT → GROUP_CHAT                | One-to-One           |
 | GROUP_CHAT → GROUP_CHAT_MEMBER     | One-to-Many          |
 | USER → MESSAGE                     | One-to-Many          |

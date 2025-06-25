@@ -110,8 +110,8 @@ git clone git@github.com:IU-Capstone-Project-2025/InnoSync.git
 ```bash
 cd InnoSync
 ```
-### 3) Create .env file and contact us through telegram for credentials (@abdugafforzoda)
-### 4)  Build and Start Containers
+### 3) Create .env file in ```backend``` directory, contact us through telegram for credentials (@abdugafforzoda)
+### 4)  Come back to root folder (```InnoSync```) and build and start containers
 ```bash
 docker-compose up --build
 ```

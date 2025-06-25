@@ -1,0 +1,365 @@
+/* Main Container */
+.projectListing {
+  display: flex;
+  min-height: calc(100vh - 64px);
+  background-color: #f8fafc;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 300px;
+  background-color: white;
+  border-right: 1px solid #e2e8f0;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.filterSection {
+  margin-bottom: 32px;
+}
+
+.filterTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 16px;
+}
+
+.filterOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #475569;
+}
+
+.checkboxLabel:hover {
+  color: #1e293b;
+}
+
+.checkboxInput {
+  width: 16px;
+  height: 16px;
+  accent-color: #16a34a;
+  cursor: pointer;
+}
+
+.checkboxText {
+  cursor: pointer;
+}
+
+.teamSizeSelect {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.teamSizeSelect:focus {
+  outline: none;
+  border-color: #16a34a;
+  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.1);
+}
+
+/* Skills Section */
+.skillsInputContainer {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.skillInput {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.skillInput:focus {
+  outline: none;
+  border-color: #16a34a;
+  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.1);
+}
+
+.addSkillBtn {
+  background-color: #16a34a;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.addSkillBtn:hover {
+  background-color: #15803d;
+}
+
+.skillsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skillTag {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #16a34a;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.removeSkillBtn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 2px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+  line-height: 1;
+}
+
+.removeSkillBtn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Main Content */
+.mainContent {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+/* Search Section */
+.searchContainer {
+  margin-bottom: 24px;
+}
+
+.searchWrapper {
+  position: relative;
+  max-width: 400px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #64748b;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 10px 12px 10px 40px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #16a34a;
+  box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.1);
+}
+
+/* Filter Tags */
+.filterTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.filterTag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #16a34a;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.removeFilterBtn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 2px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+  line-height: 1;
+}
+
+.removeFilterBtn:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Projects Grid */
+.projectsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.projectCard {
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.projectCard:hover {
+  border-color: #16a34a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.projectHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.companyLogo {
+  width: 48px;
+  height: 48px;
+  background-color: #f1f5f9;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.projectInfo {
+  flex: 1;
+}
+
+.projectTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8px;
+  margin-top: 0;
+}
+
+.projectDetails {
+  display: flex;
+  gap: 16px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.location {
+  color: #64748b;
+}
+
+.salary {
+  color: #64748b;
+}
+
+.experience {
+  color: #64748b;
+}
+
+.applyBtn {
+  background-color: #16a34a;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex-shrink: 0;
+}
+
+.applyBtn:hover {
+  background-color: #15803d;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .projectListing {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .filterSection {
+    margin-bottom: 24px;
+  }
+
+  .skillsContainer,
+  .filterTags {
+    max-height: 120px;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .projectHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .companyLogo {
+    align-self: flex-start;
+  }
+
+  .projectDetails {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .applyBtn {
+    align-self: stretch;
+  }
+
+  .searchWrapper {
+    max-width: 100%;
+  }
+
+  .sidebar {
+    padding: 16px;
+  }
+
+  .mainContent {
+    padding: 16px;
+  }
+}

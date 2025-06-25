@@ -1,12 +1,23 @@
-// src/app/authentication/layout.tsx
+import { ReactNode } from 'react';
+import Image from "next/image";
+import styles from "./page.module.css";
 
-import React from "react";
 
-export default function AuthLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <div>
-      {/* Common layout wrapper for auth pages */}
-      {children}
+export default function AuthLayout({ children }: { children: ReactNode }) {
+    return (
+    <div className={styles.parentContainer}>
+      <div className={styles.backgroundContainer}>
+        <Image
+          src="/auth.svg"
+          width={899}
+          height={1080}
+          className={styles.auth_logo}
+          alt="auth decoration"
+        />
+      </div>
+      <main className={styles.authContent}>
+          {children}
+        </main>
     </div>
   );
 }
