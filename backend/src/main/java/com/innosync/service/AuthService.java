@@ -25,7 +25,8 @@ public class AuthService {
     @Autowired
     private RefreshTokenService refreshTokenService;
 
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     public ResponseEntity<?> signUp(SignUpRequest signUpRequest) {
         String email = signUpRequest.getEmail();
