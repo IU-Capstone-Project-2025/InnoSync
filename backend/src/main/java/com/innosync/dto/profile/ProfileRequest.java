@@ -3,12 +3,14 @@ package com.innosync.dto.profile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.innosync.model.Education;
 import com.innosync.model.ExpertiseLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
 
 
 @Data
+@AllArgsConstructor
 public class ProfileRequest {
     private String telegram;
     private String github;
