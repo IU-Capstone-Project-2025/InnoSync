@@ -127,7 +127,7 @@ export default function ProjectCreationPanel({ open, onClose }: ProjectCreationP
     setCurrentStep(2);
   };
 
-  const handleStep2Submit = (e: React.FormEvent) => {
+  const handleStep2Submit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Validate that each team member has at least one skill
@@ -137,16 +137,96 @@ export default function ProjectCreationPanel({ open, onClose }: ProjectCreationP
       return;
     }
 
-    // Final submit logic here
-    console.log({
-      title,
-      description,
-      projectType,
-      teamSize,
-      teamMembers,
-      quickSync
-    });
-    onClose();
+    try {
+      // Get auth token from localStorage (assuming it's stored there)
+      const token = localStorage.getItem('token');
+      if (!token) {
+        toast.error('Authentication required. Please log in.');
+        return;
+      }
+
+      // Step 1: Create the project
+      const getTeamSizeEnum = (size: string) => {
+        switch (size) {
+          case "1-3": return "OneThree";
+          case "4-6": return "FourSix";
+          case "7+": return "SevenPlus";
+          default: return "OneThree";
+        }
+      };
+
+      const projectData = {
+        title,
+        description,
+        projectType: projectType.toUpperCase(), // FREELANCE, RESEARCH, ACADEMIC, HACKATHON
+        teamSize: getTeamSizeEnum(teamSize) // OneThree, FourSix, SevenPlus
+      };
+
+      const projectResponse = await fetch('http://localhost:8080/api/projects', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(projectData)
+      });
+
+      if (!projectResponse.ok) {
+        const errorData = await projectResponse.json();
+        toast.error(`Failed to create project: ${errorData.message || 'Unknown error'}`);
+        return;
+      }
+
+      const createdProject = await projectResponse.json();
+      const projectId = createdProject.id;
+
+      // Step 2: Add roles for each team member
+      const rolePromises = teamMembers.map(async (member) => {
+        const roleData = {
+          roleName: member.position,
+          expertiseLevel: 'MID', // Available: ENTRY, JUNIOR, MID, SENIOR, RESEARCHER
+          technologies: member.requiredSkills
+        };
+
+        const roleResponse = await fetch(`http://localhost:8080/api/projects/${projectId}/roles`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(roleData)
+        });
+
+        if (!roleResponse.ok) {
+          throw new Error(`Failed to create role for ${member.position}`);
+        }
+
+        return roleResponse.json();
+      });
+
+      // Wait for all roles to be created
+      await Promise.all(rolePromises);
+
+      toast.success('Project and team roles created successfully!', {
+        position: 'top-center',
+        autoClose: 3000,
+      });
+
+      // Reset form and close panel
+      setCurrentStep(1);
+      setTitle('');
+      setDescription('');
+      setProjectType('');
+      setTeamSize('');
+      setPositions([]);
+      setTeamMembers([]);
+      setQuickSync(false);
+      onClose();
+
+    } catch (error) {
+      console.error('Error creating project:', error);
+      toast.error(`Error: ${error instanceof Error ? error.message : 'Failed to create project'}`);
+    }
   };
 
   const handleBack = () => {
