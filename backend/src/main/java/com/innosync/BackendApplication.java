@@ -15,11 +15,22 @@ public class BackendApplication {
 	private static final Logger logger = LoggerFactory.getLogger(BackendApplication.class);
 
 	public static void main(String[] args) {
-		Dotenv dotenv = Dotenv.load();
-		System.setProperty("DB_URL", dotenv.get("DB_URL"));
-		System.setProperty("DB_USERNAME", dotenv.get("DB_USERNAME"));
-		System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
-		logger.info("Environment variables loaded and application starting");
+		// Load .env file only if it exists (for local development)
+		try {
+			Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
+			if (dotenv.get("DB_URL") != null) {
+				System.setProperty("DB_URL", dotenv.get("DB_URL"));
+			}
+			if (dotenv.get("DB_USERNAME") != null) {
+				System.setProperty("DB_USERNAME", dotenv.get("DB_USERNAME"));
+			}
+			if (dotenv.get("DB_PASSWORD") != null) {
+				System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
+			}
+			logger.info("Environment variables loaded and application starting");
+		} catch (Exception e) {
+			logger.info("No .env file found, using system environment variables");
+		}
 		SpringApplication.run(BackendApplication.class, args);
 	}
 

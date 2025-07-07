@@ -8,6 +8,11 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    environment:
+      - DB_URL=jdbc:postgresql://postgres:5432/registration
+      - DB_USERNAME=myuser
+      - DB_PASSWORD=mypass
+      - ALLOWED_ORIGINS=http://51.250.42.156:3000
 
   frontend:
     build: ./frontend/innosync
@@ -16,7 +21,8 @@ services:
     depends_on:
       - app
     environment:
-      NODE_ENV: production
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://51.250.42.156:8080
     restart: unless-stopped
 
   postgres:
