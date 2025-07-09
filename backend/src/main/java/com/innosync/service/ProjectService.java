@@ -6,9 +6,13 @@ import com.innosync.dto.project.ProjectRoleResponse;
 import com.innosync.dto.project.ProjectRoleWithProjectResponse;
 import com.innosync.model.Project;
 import com.innosync.model.User;
+import com.innosync.model.Team;
+import com.innosync.model.ChatRoom;
 import com.innosync.repository.ProjectRepository;
 import com.innosync.repository.ProjectRoleRepository;
 import com.innosync.repository.UserRepository;
+import com.innosync.repository.TeamRepository;
+import com.innosync.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.HashSet;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +33,8 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
     private final ProjectRoleRepository projectRoleRepository;
+    private final TeamRepository teamRepository;
+    private final ChatRoomRepository chatRoomRepository;
 
     public ProjectResponse createProject(ProjectRequest request, String email) {
         logger.info("Creating project for recruiter: {}", email);
@@ -43,6 +50,18 @@ public class ProjectService {
                     .recruiter(recruiter)
                     .build();
             Project saved = projectRepository.save(project);
+            // Create and link a team to the project, and add recruiter as member
+            Team team = Team.builder().project(saved).name(saved.getTitle() + " Team").build();
+            team.getMembers().add(recruiter);
+            Team savedTeam = teamRepository.save(team);
+            // Automatically create a team chat for the new team
+            ChatRoom teamChat = ChatRoom.builder()
+                .isTeamChat(true)
+                .team(savedTeam)
+                .name(savedTeam.getName() + " Chat")
+                .participants(new HashSet<>(savedTeam.getMembers()))
+                .build();
+            chatRoomRepository.save(teamChat);
             logger.info("Project saved with id: {} for recruiter: {}", saved.getId(), recruiter.getEmail());
             return mapToDTO(saved);
         } catch (Exception e) {
