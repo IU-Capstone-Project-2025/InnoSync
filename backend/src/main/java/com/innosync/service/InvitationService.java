@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.innosync.model.Team;
+import com.innosync.repository.TeamRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +27,7 @@ public class InvitationService {
     private final InvitationRepository invitationRepository;
     private final ProjectRoleRepository projectRoleRepository;
     private final UserRepository userRepository;
+    private final TeamRepository teamRepository;
 
     @Transactional
     public InvitationResponse createInvitation(InvitationRequest request, String recruiterEmail) {
@@ -81,6 +84,16 @@ public class InvitationService {
 
         invitation.setStatus(response);
         invitation.setRespondedAt(LocalDateTime.now());
+
+        // If accepted, add user to the project's team
+        if (response == InvitationStatus.ACCEPTED) {
+            Project project = invitation.getProjectRole().getProject();
+            Team team = project.getTeam();
+            if (team != null) {
+                team.getMembers().add(invitation.getRecipient());
+                teamRepository.save(team);
+            }
+        }
 
         return mapToResponse(invitationRepository.save(invitation));
     }

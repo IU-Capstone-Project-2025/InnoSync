@@ -2,11 +2,14 @@ package com.innosync.service;
 
 import com.innosync.dto.project.RoleApplicationResponse;
 import com.innosync.model.ApplicationStatus;
+import com.innosync.model.Project;
 import com.innosync.model.ProjectRole;
 import com.innosync.model.RoleApplication;
+import com.innosync.model.Team;
 import com.innosync.model.User;
 import com.innosync.repository.RoleApplicationRepository;
 import com.innosync.repository.ProjectRoleRepository;
+import com.innosync.repository.TeamRepository;
 import com.innosync.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,7 @@ public class RoleApplicationService {
     private final RoleApplicationRepository applicationRepository;
     private final ProjectRoleRepository projectRoleRepository;
     private final UserRepository userRepository;
+    private final TeamRepository teamRepository;
 
     @Transactional
     public RoleApplicationResponse createApplication(Long projectRoleId, String userEmail) {
@@ -60,6 +64,16 @@ public class RoleApplicationService {
 
         application.setStatus(status);
         application.setUpdatedAt(LocalDateTime.now());
+
+        // If accepted, add user to the project's team
+        if (status == ApplicationStatus.ACCEPTED) {
+            Project project = application.getProjectRole().getProject();
+            Team team = project.getTeam();
+            if (team != null) {
+                team.getMembers().add(application.getUser());
+                teamRepository.save(team);
+            }
+        }
 
         return mapToResponse(applicationRepository.save(application));
     }
