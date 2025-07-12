@@ -3,6 +3,6 @@ node_modules
 build
 dist
 .git
-.env
+# .env
 *.log
 npm-debug.log
