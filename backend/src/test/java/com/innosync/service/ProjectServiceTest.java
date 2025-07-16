@@ -6,9 +6,13 @@ import com.innosync.model.Project;
 import com.innosync.model.ProjectType;
 import com.innosync.model.TeamSize;
 import com.innosync.model.User;
+import com.innosync.model.Team;
+import com.innosync.model.ChatRoom;
 import com.innosync.repository.ProjectRepository;
 import com.innosync.repository.ProjectRoleRepository;
 import com.innosync.repository.UserRepository;
+import com.innosync.repository.TeamRepository;
+import com.innosync.repository.ChatRoomRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,12 +46,19 @@ class ProjectServiceTest {
     @Mock
     private ProjectRoleRepository projectRoleRepository;
 
+    @Mock
+    private TeamRepository teamRepository;
+
+    @Mock
+    private ChatRoomRepository chatRoomRepository;
+
     @InjectMocks
     private ProjectService projectService;
 
     private User testUser;
     private Project testProject;
     private ProjectRequest projectRequest;
+    private Team testTeam;
 
     @BeforeEach
     void setUp() {
@@ -65,6 +76,12 @@ class ProjectServiceTest {
                 .updatedAt(LocalDateTime.now())
                 .build();
 
+        testTeam = Team.builder()
+                .id(1L)
+                .name("Test Project Team")
+                .project(testProject)
+                .build();
+
         projectRequest = new ProjectRequest();
         projectRequest.setTitle("Test Project");
         projectRequest.setDescription("Test Description");
@@ -78,6 +95,8 @@ class ProjectServiceTest {
         String recruiterEmail = "recruiter@example.com";
         when(userRepository.findByEmail(recruiterEmail)).thenReturn(Optional.of(testUser));
         when(projectRepository.save(any(Project.class))).thenReturn(testProject);
+        when(teamRepository.save(any(Team.class))).thenReturn(testTeam);
+        when(chatRoomRepository.save(any(ChatRoom.class))).thenReturn(any(ChatRoom.class));
 
         // When
         ProjectResponse result = projectService.createProject(projectRequest, recruiterEmail);
@@ -234,9 +253,17 @@ class ProjectServiceTest {
                 .recruiter(testUser)
                 .build();
 
+        Team mobileTeam = Team.builder()
+                .id(2L)
+                .name("Mobile App Team")
+                .project(mobileProject)
+                .build();
+
         String recruiterEmail = "recruiter@example.com";
         when(userRepository.findByEmail(recruiterEmail)).thenReturn(Optional.of(testUser));
         when(projectRepository.save(any(Project.class))).thenReturn(mobileProject);
+        when(teamRepository.save(any(Team.class))).thenReturn(mobileTeam);
+        when(chatRoomRepository.save(any(ChatRoom.class))).thenReturn(any(ChatRoom.class));
 
         // When
         ProjectResponse result = projectService.createProject(projectRequest, recruiterEmail);
