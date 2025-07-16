@@ -19,6 +19,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 class ProfileServiceTest {
@@ -322,18 +324,31 @@ class ProfileServiceTest {
     @Test
     void getMyProfile_WithNonExistentProfile_ShouldThrowException() {
         // Given
-        String userEmail = "developer@example.com";
+        String userEmail = "nonexistent@example.com";
+        User userWithoutProfile = new User(userEmail, "User Without Profile", "password");
+        userWithoutProfile.setId(999L);
         
-        when(userRepository.findByEmail(userEmail)).thenReturn(Optional.of(testUser));
-        when(profileRepository.findByUser(testUser)).thenReturn(Optional.empty());
+        // Create a new ProfileService instance with fresh mocks for this test
+        ProfileRepository freshProfileRepository = mock(ProfileRepository.class);
+        UserRepository freshUserRepository = mock(UserRepository.class);
+        WorkExperienceRepository freshWorkExperienceRepository = mock(WorkExperienceRepository.class);
+        TechnologyRepository freshTechnologyRepository = mock(TechnologyRepository.class);
+        
+        ProfileService freshProfileService = new ProfileService(
+                freshProfileRepository, freshUserRepository, 
+                freshWorkExperienceRepository, freshTechnologyRepository
+        );
+        
+        when(freshUserRepository.findByEmail(userEmail)).thenReturn(Optional.of(userWithoutProfile));
+        when(freshProfileRepository.findByUser(userWithoutProfile)).thenReturn(Optional.empty());
 
         // When & Then
-        assertThatThrownBy(() -> profileService.getMyProfile(userEmail))
+        assertThatThrownBy(() -> freshProfileService.getMyProfile(userEmail))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessage("Profile not found");
 
-        verify(userRepository).findByEmail(userEmail);
-        verify(profileRepository).findByUser(testUser);
+        verify(freshUserRepository).findByEmail(userEmail);
+        verify(freshProfileRepository).findByUser(userWithoutProfile);
     }
 
     @Test
