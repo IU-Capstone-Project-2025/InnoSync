@@ -322,13 +322,15 @@ class ProfileServiceTest {
     @Test
     void getMyProfile_WithNonExistentProfile_ShouldThrowException() {
         // Given
-        String userEmail = "developer@example.com";
+        String userEmail = "nonexistent@example.com";
+        User userWithoutProfile = new User(userEmail, "User Without Profile", "password");
+        userWithoutProfile.setId(999L);
         
         // Reset all mocks to ensure clean state
         reset(userRepository, profileRepository);
         
-        when(userRepository.findByEmail(userEmail)).thenReturn(Optional.of(testUser));
-        when(profileRepository.findByUser(any(User.class))).thenReturn(Optional.empty());
+        when(userRepository.findByEmail(userEmail)).thenReturn(Optional.of(userWithoutProfile));
+        when(profileRepository.findByUser(userWithoutProfile)).thenReturn(Optional.empty());
 
         // When & Then
         assertThatThrownBy(() -> profileService.getMyProfile(userEmail))
@@ -336,7 +338,7 @@ class ProfileServiceTest {
                 .hasMessage("Profile not found");
 
         verify(userRepository).findByEmail(userEmail);
-        verify(profileRepository).findByUser(any(User.class));
+        verify(profileRepository).findByUser(userWithoutProfile);
     }
 
     @Test

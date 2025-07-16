@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth")
 @Tag(name = "Authentication API", description = "API for user authentication") // Swagger annotation
-public class AuthController {
+public class    AuthController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
