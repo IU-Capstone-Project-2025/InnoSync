@@ -19,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
 class ProfileServiceTest {
@@ -327,10 +328,11 @@ class ProfileServiceTest {
         userWithoutProfile.setId(999L);
         
         // Reset all mocks to ensure clean state
-        reset(userRepository, profileRepository);
+        reset(userRepository, profileRepository, workExperienceRepository, technologyRepository);
         
-        when(userRepository.findByEmail(userEmail)).thenReturn(Optional.of(userWithoutProfile));
-        when(profileRepository.findByUser(userWithoutProfile)).thenReturn(Optional.empty());
+        // Use lenient() to avoid strict stubbing issues
+        lenient().when(userRepository.findByEmail(userEmail)).thenReturn(Optional.of(userWithoutProfile));
+        lenient().when(profileRepository.findByUser(userWithoutProfile)).thenReturn(Optional.empty());
 
         // When & Then
         assertThatThrownBy(() -> profileService.getMyProfile(userEmail))
