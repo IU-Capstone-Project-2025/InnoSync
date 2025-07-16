@@ -28,10 +28,10 @@ import java.util.stream.Collectors;
 @Service
 public class ProjectRoleService {
     private static final Logger logger = LoggerFactory.getLogger(ProjectRoleService.class);
-    private ProjectRoleRepository roleRepository;
-    private ProjectRepository projectRepository;
-    private UserRepository userRepository;
-    private TechnologyRepository technologyRepository;
+    private final ProjectRoleRepository roleRepository;
+    private final ProjectRepository projectRepository;
+    private final UserRepository userRepository;
+    private final TechnologyRepository technologyRepository;
 
     public ProjectRoleService(ProjectRoleRepository roleRepository,
                               ProjectRepository projectRepository,

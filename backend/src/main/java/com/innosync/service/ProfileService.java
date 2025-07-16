@@ -28,17 +28,18 @@ public class ProfileService {
 
     private static final Logger logger = LoggerFactory.getLogger(ProfileService.class);
 
-    @Autowired
-    private ProfileRepository profileRepository;
+    private final ProfileRepository profileRepository;
+    private final UserRepository userRepository;
+    private final WorkExperienceRepository workExperienceRepository;
+    private final TechnologyRepository technologyRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private WorkExperienceRepository workExperienceRepository;
-
-    @Autowired
-    private TechnologyRepository technologyRepository;
+    public ProfileService(ProfileRepository profileRepository, UserRepository userRepository, 
+                         WorkExperienceRepository workExperienceRepository, TechnologyRepository technologyRepository) {
+        this.profileRepository = profileRepository;
+        this.userRepository = userRepository;
+        this.workExperienceRepository = workExperienceRepository;
+        this.technologyRepository = technologyRepository;
+    }
 
     @Transactional
     public ProfileResponse createOrUpdateProfile(String email, ProfileRequest request) {

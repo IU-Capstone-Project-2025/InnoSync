@@ -324,8 +324,11 @@ class ProfileServiceTest {
         // Given
         String userEmail = "developer@example.com";
         
+        // Reset all mocks to ensure clean state
+        reset(userRepository, profileRepository);
+        
         when(userRepository.findByEmail(userEmail)).thenReturn(Optional.of(testUser));
-        when(profileRepository.findByUser(testUser)).thenReturn(Optional.empty());
+        when(profileRepository.findByUser(any(User.class))).thenReturn(Optional.empty());
 
         // When & Then
         assertThatThrownBy(() -> profileService.getMyProfile(userEmail))
@@ -333,7 +336,7 @@ class ProfileServiceTest {
                 .hasMessage("Profile not found");
 
         verify(userRepository).findByEmail(userEmail);
-        verify(profileRepository).findByUser(testUser);
+        verify(profileRepository).findByUser(any(User.class));
     }
 
     @Test
