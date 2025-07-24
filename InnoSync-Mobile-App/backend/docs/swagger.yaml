@@ -1,0 +1,1791 @@
+basePath: /api/v1
+definitions:
+  models.ApplicationResponse:
+    properties:
+      applied_at:
+        type: string
+      cover_letter:
+        type: string
+      id:
+        type: integer
+      project_id:
+        type: integer
+      project_role_id:
+        type: integer
+      project_title:
+        type: string
+      role_name:
+        type: string
+      status:
+        $ref: '#/definitions/models.ApplicationStatusEnum'
+      updated_at:
+        type: string
+      user_full_name:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  models.ApplicationStatusEnum:
+    enum:
+    - PENDING
+    - UNDER_REVIEW
+    - ACCEPTED
+    - REJECTED
+    - WITHDRAWN
+    type: string
+    x-enum-varnames:
+    - ApplicationStatusPending
+    - ApplicationStatusUnderReview
+    - ApplicationStatusAccepted
+    - ApplicationStatusRejected
+    - ApplicationStatusWithdrawn
+  models.AuthResponse:
+    properties:
+      tokens:
+        $ref: '#/definitions/models.TokenResponse'
+      user:
+        $ref: '#/definitions/models.User'
+    type: object
+  models.CreateApplicationRequest:
+    properties:
+      cover_letter:
+        type: string
+    type: object
+  models.CreateInvitationRequest:
+    properties:
+      message:
+        type: string
+      project_role_id:
+        type: integer
+      recipient_id:
+        type: integer
+    required:
+    - project_role_id
+    - recipient_id
+    type: object
+  models.CreateProfileRequest:
+    properties:
+      bio:
+        type: string
+      education:
+        $ref: '#/definitions/models.EducationEnum'
+      email:
+        type: string
+      expertise:
+        type: string
+      expertise_level:
+        $ref: '#/definitions/models.ExpertiseLevelEnum'
+      github:
+        type: string
+      name:
+        type: string
+      position:
+        type: string
+      technologies:
+        items:
+          type: string
+        type: array
+      telegram:
+        type: string
+      work_experience:
+        items:
+          $ref: '#/definitions/models.WorkExperienceRequest'
+        type: array
+    required:
+    - email
+    - name
+    type: object
+  models.CreateProjectRequest:
+    properties:
+      description:
+        type: string
+      team_size:
+        type: integer
+      title:
+        type: string
+    required:
+    - title
+    type: object
+  models.CreateProjectRoleRequest:
+    properties:
+      expertise_level:
+        $ref: '#/definitions/models.ExpertiseLevelEnum'
+      role_name:
+        type: string
+      technologies:
+        items:
+          type: string
+        type: array
+    required:
+    - role_name
+    type: object
+  models.EducationEnum:
+    enum:
+    - NO_DEGREE
+    - BACHELOR
+    - MASTER
+    - PHD
+    type: string
+    x-enum-varnames:
+    - EducationNoDegree
+    - EducationBachelor
+    - EducationMaster
+    - EducationPhD
+  models.ExpertiseLevelEnum:
+    enum:
+    - ENTRY
+    - JUNIOR
+    - MID
+    - SENIOR
+    - RESEARCHER
+    type: string
+    x-enum-varnames:
+    - ExpertiseLevelEntry
+    - ExpertiseLevelJunior
+    - ExpertiseLevelMid
+    - ExpertiseLevelSenior
+    - ExpertiseLevelResearcher
+  models.FileUploadResponse:
+    properties:
+      filename:
+        type: string
+      message:
+        type: string
+      size:
+        type: integer
+      url:
+        type: string
+    type: object
+  models.InvitationResponse:
+    properties:
+      id:
+        type: integer
+      message:
+        type: string
+      project_id:
+        type: integer
+      project_role_id:
+        type: integer
+      project_title:
+        type: string
+      recipient_id:
+        type: integer
+      recipient_name:
+        type: string
+      responded_at:
+        type: string
+      role_name:
+        type: string
+      sent_at:
+        type: string
+      status:
+        $ref: '#/definitions/models.InvitationStatusEnum'
+    type: object
+  models.InvitationStatusEnum:
+    enum:
+    - INVITED
+    - ACCEPTED
+    - DECLINED
+    - REVOKED
+    type: string
+    x-enum-varnames:
+    - InvitationStatusInvited
+    - InvitationStatusAccepted
+    - InvitationStatusDeclined
+    - InvitationStatusRevoked
+  models.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  models.LogoutRequest:
+    properties:
+      refresh_token:
+        type: string
+    required:
+    - refresh_token
+    type: object
+  models.ProfileResponse:
+    properties:
+      avatar_url:
+        type: string
+      bio:
+        type: string
+      created_at:
+        type: string
+      education:
+        $ref: '#/definitions/models.EducationEnum'
+      email:
+        type: string
+      expertise:
+        type: string
+      expertise_level:
+        $ref: '#/definitions/models.ExpertiseLevelEnum'
+      github:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      position:
+        type: string
+      resume_url:
+        type: string
+      technologies:
+        items:
+          $ref: '#/definitions/models.Technology'
+        type: array
+      telegram:
+        type: string
+      user_id:
+        type: integer
+      work_experiences:
+        items:
+          $ref: '#/definitions/models.WorkExperience'
+        type: array
+    type: object
+  models.Project:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      recruiter_id:
+        type: integer
+      roles:
+        description: Related data
+        items:
+          $ref: '#/definitions/models.ProjectRole'
+        type: array
+      team_size:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.ProjectResponse:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      is_active:
+        type: boolean
+      roles:
+        items:
+          $ref: '#/definitions/models.ProjectRole'
+        type: array
+      team_size:
+        type: integer
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.ProjectRole:
+    properties:
+      expertise_level:
+        $ref: '#/definitions/models.ExpertiseLevelEnum'
+      id:
+        type: integer
+      is_open:
+        type: boolean
+      project:
+        allOf:
+        - $ref: '#/definitions/models.Project'
+        description: Related data
+      project_id:
+        type: integer
+      role_name:
+        type: string
+      technologies:
+        type: string
+    type: object
+  models.ProjectRoleResponse:
+    properties:
+      expertise_level:
+        $ref: '#/definitions/models.ExpertiseLevelEnum'
+      id:
+        type: integer
+      is_open:
+        type: boolean
+      project_id:
+        type: integer
+      project_title:
+        type: string
+      role_name:
+        type: string
+      technologies:
+        items:
+          type: string
+        type: array
+    type: object
+  models.RefreshTokenRequest:
+    properties:
+      refresh_token:
+        type: string
+    required:
+    - refresh_token
+    type: object
+  models.RespondInvitationRequest:
+    properties:
+      response:
+        $ref: '#/definitions/models.InvitationStatusEnum'
+    required:
+    - response
+    type: object
+  models.SignupRequest:
+    properties:
+      email:
+        type: string
+      full_name:
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - email
+    - full_name
+    - password
+    type: object
+  models.Technology:
+    properties:
+      category:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.TokenResponse:
+    properties:
+      access_token:
+        type: string
+      expires_in:
+        type: integer
+      refresh_token:
+        type: string
+      token_type:
+        type: string
+    type: object
+  models.UpdateApplicationStatusRequest:
+    properties:
+      status:
+        $ref: '#/definitions/models.ApplicationStatusEnum'
+    required:
+    - status
+    type: object
+  models.UpdateProfileRequest:
+    properties:
+      bio:
+        type: string
+      education:
+        $ref: '#/definitions/models.EducationEnum'
+      expertise:
+        type: string
+      expertise_level:
+        $ref: '#/definitions/models.ExpertiseLevelEnum'
+      github:
+        type: string
+      position:
+        type: string
+      technologies:
+        items:
+          type: string
+        type: array
+      telegram:
+        type: string
+      work_experience:
+        items:
+          $ref: '#/definitions/models.WorkExperienceRequest'
+        type: array
+    type: object
+  models.UpdateProjectRequest:
+    properties:
+      description:
+        type: string
+      team_size:
+        type: integer
+      title:
+        type: string
+    type: object
+  models.User:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      full_name:
+        type: string
+      id:
+        type: integer
+      last_login:
+        type: string
+    type: object
+  models.WorkExperience:
+    properties:
+      company:
+        type: string
+      description:
+        type: string
+      end_date:
+        type: string
+      id:
+        type: integer
+      position:
+        type: string
+      start_date:
+        type: string
+      user_profile_id:
+        type: integer
+    type: object
+  models.WorkExperienceRequest:
+    properties:
+      company:
+        type: string
+      description:
+        type: string
+      end_date:
+        type: string
+      position:
+        type: string
+      start_date:
+        type: string
+    required:
+    - company
+    - position
+    - start_date
+    type: object
+host: localhost:3000
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: RESTful API for InnoSync Mobile Application
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: InnoSync API
+  version: "1.0"
+paths:
+  /applications:
+    get:
+      description: Get all applications submitted by the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.ApplicationResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get user applications
+      tags:
+      - applications
+  /applications/{id}:
+    delete:
+      description: Withdraw a submitted application
+      parameters:
+      - description: Application ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete application
+      tags:
+      - applications
+    get:
+      description: Get a specific application by ID
+      parameters:
+      - description: Application ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ApplicationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get application
+      tags:
+      - applications
+  /applications/{id}/status:
+    patch:
+      consumes:
+      - application/json
+      description: Update the status of a specific application
+      parameters:
+      - description: Application ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Status update request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateApplicationStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ApplicationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update application status
+      tags:
+      - applications
+  /applications/project-roles/{projectRoleId}:
+    get:
+      description: Get all applications for a specific project role
+      parameters:
+      - description: Project Role ID
+        in: path
+        name: projectRoleId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.ApplicationResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get role applications
+      tags:
+      - applications
+    post:
+      consumes:
+      - application/json
+      description: Apply for a project role
+      parameters:
+      - description: Project Role ID
+        in: path
+        name: projectRoleId
+        required: true
+        type: integer
+      - description: Application creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateApplicationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.ApplicationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "409":
+          description: Conflict
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create application
+      tags:
+      - applications
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate a user and return access and refresh tokens
+      parameters:
+      - description: Login request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: User login
+      tags:
+      - auth
+  /auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Invalidate the refresh token
+      parameters:
+      - description: Logout request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.LogoutRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: User logout
+      tags:
+      - auth
+  /auth/me:
+    get:
+      description: Get information about the currently authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get current user
+      tags:
+      - auth
+  /auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Refresh the access token using a valid refresh token
+      parameters:
+      - description: Refresh token request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.RefreshTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.TokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Refresh access token
+      tags:
+      - auth
+  /auth/signup:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user account
+      parameters:
+      - description: Signup request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.SignupRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "409":
+          description: Conflict
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: User registration
+      tags:
+      - auth
+  /invitations:
+    post:
+      consumes:
+      - application/json
+      description: Create a new invitation for a project role
+      parameters:
+      - description: Invitation creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateInvitationRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.InvitationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "409":
+          description: Conflict
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create invitation
+      tags:
+      - invitations
+  /invitations/{id}:
+    delete:
+      description: Delete a sent invitation
+      parameters:
+      - description: Invitation ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete invitation
+      tags:
+      - invitations
+    get:
+      description: Get a specific invitation by ID
+      parameters:
+      - description: Invitation ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.InvitationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get invitation
+      tags:
+      - invitations
+  /invitations/{id}/respond:
+    patch:
+      consumes:
+      - application/json
+      description: Respond to an invitation (accept or decline)
+      parameters:
+      - description: Invitation ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Invitation response request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.RespondInvitationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.InvitationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Respond to invitation
+      tags:
+      - invitations
+  /invitations/{id}/revoke:
+    patch:
+      description: Revoke a sent invitation
+      parameters:
+      - description: Invitation ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.InvitationResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Revoke invitation
+      tags:
+      - invitations
+  /invitations/project-roles/{projectRoleId}:
+    get:
+      description: Get all invitations for a specific project role
+      parameters:
+      - description: Project Role ID
+        in: path
+        name: projectRoleId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.InvitationResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get invitations by project role
+      tags:
+      - invitations
+  /invitations/received:
+    get:
+      description: Get all invitations received by the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.InvitationResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get received invitations
+      tags:
+      - invitations
+  /invitations/sent:
+    get:
+      description: Get all invitations sent by the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.InvitationResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get sent invitations
+      tags:
+      - invitations
+  /profile:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user profile with detailed information
+      parameters:
+      - description: Profile creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.ProfileResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "409":
+          description: Conflict
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create user profile
+      tags:
+      - profile
+    put:
+      consumes:
+      - application/json
+      description: Update user profile information
+      parameters:
+      - description: Profile update request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ProfileResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update user profile
+      tags:
+      - profile
+  /profile/image:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload a profile image for the authenticated user
+      parameters:
+      - description: Profile image file
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.FileUploadResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Upload profile image
+      tags:
+      - profile
+  /profile/me:
+    get:
+      description: Get detailed profile information for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ProfileResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get user profile
+      tags:
+      - profile
+  /profile/resume:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload a resume file for the authenticated user
+      parameters:
+      - description: Resume file
+        in: formData
+        name: resume
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.FileUploadResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Upload resume
+      tags:
+      - profile
+  /profile/technologies:
+    get:
+      description: Get list of all available technologies
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Technology'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Get technologies
+      tags:
+      - profile
+  /projects:
+    post:
+      consumes:
+      - application/json
+      description: Create a new project
+      parameters:
+      - description: Project creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateProjectRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.ProjectResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create project
+      tags:
+      - projects
+  /projects/{id}:
+    delete:
+      description: Delete a project (soft delete)
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete project
+      tags:
+      - projects
+    get:
+      description: Get a specific project by ID
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ProjectResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get project
+      tags:
+      - projects
+    put:
+      consumes:
+      - application/json
+      description: Update a project
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Project update request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateProjectRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ProjectResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update project
+      tags:
+      - projects
+  /projects/{id}/roles:
+    get:
+      description: Get all roles for a specific project
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.ProjectRoleResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get project roles
+      tags:
+      - projects
+    post:
+      consumes:
+      - application/json
+      description: Create a new role for a project
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Project role creation request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateProjectRoleRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.ProjectRoleResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create project role
+      tags:
+      - projects
+  /projects/{id}/roles/{roleId}:
+    get:
+      description: Get a specific project role by ID
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Role ID
+        in: path
+        name: roleId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ProjectRoleResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get project role
+      tags:
+      - projects
+  /projects/me:
+    get:
+      description: Get all projects created by the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.ProjectResponse'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get user projects
+      tags:
+      - projects
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
